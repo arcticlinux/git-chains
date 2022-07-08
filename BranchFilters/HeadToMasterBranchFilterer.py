@@ -9,7 +9,6 @@ class HeadToMasterBranchFilterer(BranchFilterer):
     def __init__(self, repository: Repository):
         self.logger = Logger(self)
         self.repository = repository
-        self.head_branch_name = self.repository.head.name[11:]
         self.generate_log_from_head_to_merge_base()
 
     def generate_log_from_head_to_merge_base(self):
@@ -22,9 +21,9 @@ class HeadToMasterBranchFilterer(BranchFilterer):
         self.logger.log("^ master ^")        
 
     def walk_log_from_head_to_merge_base(self):
-        head_master_merge_base = self.get_merge_base("master", self.head_branch_name)
+        head_master_merge_base = self.get_merge_base("master", self.repository.head.shorthand)
         walker = BranchToCommitWalker(self.repository, head_master_merge_base)
-        head_branch = self.repository.branches[self.head_branch_name]
+        head_branch = self.repository.head
         for commit in walker.walk(head_branch):
             yield commit.hex
 
@@ -34,5 +33,5 @@ class HeadToMasterBranchFilterer(BranchFilterer):
         return executer.execute_for_output()
 
     def should_include_branch(self, branch_name):
-        merge_base = self.get_merge_base(self.head_branch_name, branch_name)
+        merge_base = self.get_merge_base(self.repository.head.shorthand, branch_name)
         return merge_base in self.log_from_head_to_merge_base

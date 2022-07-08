@@ -5,7 +5,7 @@ from Interoperability.ShellCommandExecuter import ShellCommandExecuter
 
 class BranchToCommitWalker(RepositoryWalker):
     def __init__(self, repository: Repository, commit_to_stop_at):
-        self.repository_directory = repository.path
+        self.repository = repository
         self.commit_to_stop_at = commit_to_stop_at
         super().__init__(repository)
 
@@ -17,5 +17,5 @@ class BranchToCommitWalker(RepositoryWalker):
 
     def is_ancestor(self, commit, possible_ancestor):
         args = ['git', 'merge-base', '--is-ancestor', possible_ancestor, commit]
-        executer = ShellCommandExecuter(self.repository_directory, args)
+        executer = ShellCommandExecuter(self.repository.path, args)
         return not executer.execute_for_return_code()

@@ -1,3 +1,5 @@
+from pygit2 import Repository
+
 from Interoperability.ShellCommandExecuter import ShellCommandExecuter
 from Logger import Logger
 
@@ -5,10 +7,10 @@ class CommitTree:
     root = None
     nodes = {}
 
-    def __init__(self, root_id, repository_directory):
+    def __init__(self, root_id, repository: Repository):
         self.logger = Logger(self)
         self.root_id = root_id
-        self.repository_directory = repository_directory
+        self.repository = repository
 
     def insert(self, node):
         if not node.commit.id in self.nodes:
@@ -35,7 +37,7 @@ class CommitTree:
 
     def get_merged_branch_names(self, hex):
         args = ['git', 'branch', '--merged', hex]
-        executer = ShellCommandExecuter(self.repository_directory, args)
+        executer = ShellCommandExecuter(self.repository.path, args)
         merged_branches = executer.execute_for_output().split()
         if "*" in merged_branches:
             merged_branches.remove("*")

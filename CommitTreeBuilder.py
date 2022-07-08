@@ -1,15 +1,17 @@
+from pygit2 import Repository
+
 from CommitTree import CommitTree
 from CommitNode import CommitNode
 
 class CommitTreeBuilder:
-    def __init__(self, root_commit_id, repository_directory, branch_name_map, chain_repository):
+    def __init__(self, root_commit_id, repository: Repository, branch_name_map, chain_repository):
         self.root_commit_id = root_commit_id
-        self.repository_directory = repository_directory
+        self.repository = repository
         self.chain_repository = chain_repository
         self.branch_name_map = branch_name_map
 
     def build_commit_tree(self, commit_branches_to_build_tree):
-        tree = CommitTree(self.root_commit_id, self.repository_directory)
+        tree = CommitTree(self.root_commit_id, self.repository)
         self.insert_branches_into_tree(tree, commit_branches_to_build_tree)
         tree.find_root()
         return tree

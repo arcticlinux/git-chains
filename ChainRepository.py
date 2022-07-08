@@ -89,5 +89,5 @@ class ChainRepository():
         self.branch_name_map[commit_id].append(name)  
 
     def build_commit_tree(self):
-        builder = CommitTreeBuilder(self.octopus_merge_base, self.repository.path, self.branch_name_map, self)
+        builder = CommitTreeBuilder(self.octopus_merge_base, self.repository, self.branch_name_map, self)
         self.tree = builder.build_commit_tree(self.local_branch_logs_to_merge_base)
