@@ -18,7 +18,7 @@ def __main__():
     command = "git " + ' '.join(unknown_args)
 
     validate()
-    repo_name = os.getcwd() + "\\.git"
+    repo_name = os.path.join(os.getcwd(), ".git")
 
     branch_filterer = BranchFilterer()
     if args.reduce:

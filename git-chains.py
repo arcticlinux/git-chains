@@ -37,7 +37,7 @@ def get_repo_name():
     if not os.path.exists("./.git"):
         print("Must run inside a repository")
         return
-    return os.getcwd() + "\\.git"
+    return os.path.join(os.getcwd(), '.git')
 
 def get_branch_filterer(repository, branches_to_include):
     if len(branches_to_include) > 0:

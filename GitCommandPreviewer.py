@@ -17,7 +17,7 @@ class GitCommandPreviewer:
     def preview_commands(self, commands):
         with tempfile.TemporaryDirectory() as temp_dir:
             self.create_skeleton_repository_from_tree(temp_dir, commands)
-            temp_repository = Repository(temp_dir + "\\.git")
+            temp_repository = Repository(os.path.join(temp_dir, ".git"))
             self.run_git_chains_on_repository(temp_repository)
             self.make_writeable_recursive(temp_dir)
 

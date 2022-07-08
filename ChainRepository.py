@@ -1,3 +1,5 @@
+import os
+
 from CommitTreeBuilder import CommitTreeBuilder
 from Interoperability.ShellCommandExecuter import ShellCommandExecuter
 from Logger import Logger
@@ -15,7 +17,7 @@ class ChainRepository():
     """
     def __init__(self, repository, branch_inclusion_filterer):
         self.branch_inclusion_filterer = branch_inclusion_filterer
-        self.repository_directory = repr(repository).split('\'')[1][:-4]
+        self.repository_directory = os.path.split(repr(repository))[1][:-4]
         self.local_branch_logs_to_merge_base = []
         self.local_feature_branches = []
         self.local_branch_names = [] 

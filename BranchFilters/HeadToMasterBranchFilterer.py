@@ -1,3 +1,5 @@
+import os
+
 from BranchFilters.BranchFilterer import BranchFilterer
 from Interoperability.ShellCommandExecuter import ShellCommandExecuter
 from RepositoryWalkers.BranchToCommitWalker import BranchToCommitWalker
@@ -7,7 +9,7 @@ class HeadToMasterBranchFilterer(BranchFilterer):
     def __init__(self, repository):
         self.logger = Logger(self)
         self.repository = repository
-        self.repository_directory = repr(repository).split('\'')[1][:-4]
+        self.repository_directory = os.path.split(repr(repository))[1][:-4]
         self.head_branch_name = self.repository.head.name[11:]
         self.generate_log_from_head_to_merge_base()
 

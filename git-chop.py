@@ -6,8 +6,8 @@ from pygit2 import Repository
 A simple git command to quickly clean out your old branches.
 '''
 
-if os.path.exists("./.git"):
-    local_repo_name = os.getcwd() + "\\.git"
+if os.path.exists(os.path.join(".", ".git")):
+    local_repo_name = os.path.join(os.getcwd(), ".git")
 
 repo = Repository(local_repo_name)
 
