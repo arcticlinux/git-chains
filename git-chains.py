@@ -39,7 +39,7 @@ def get_repo_name():
         return
     return os.path.join(os.getcwd(), '.git')
 
-def get_branch_filterer(repository, branches_to_include):
+def get_branch_filterer(repository: Repository, branches_to_include):
     if len(branches_to_include) > 0:
         if "all" in branches_to_include:
             return BranchFilterer()

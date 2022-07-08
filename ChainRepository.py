@@ -1,4 +1,4 @@
-import os
+from pygit2 import Repository
 
 from CommitTreeBuilder import CommitTreeBuilder
 from Interoperability.ShellCommandExecuter import ShellCommandExecuter
@@ -15,9 +15,8 @@ class ChainRepository():
 
     The branch_inclusion_filterer is a predicate that decides which branches should be included. 
     """
-    def __init__(self, repository, branch_inclusion_filterer):
+    def __init__(self, repository: Repository, branch_inclusion_filterer):
         self.branch_inclusion_filterer = branch_inclusion_filterer
-        self.repository_directory = os.path.split(repr(repository))[1][:-4]
         self.local_branch_logs_to_merge_base = []
         self.local_feature_branches = []
         self.local_branch_names = [] 
@@ -60,7 +59,7 @@ class ChainRepository():
 
     def calculate_octopus_merge_base(self):
         args = ['git', 'merge-base', '--octopus'] + self.local_branch_names
-        executer = ShellCommandExecuter(self.repository_directory, args)
+        executer = ShellCommandExecuter(self.repository.path, args)
         self.octopus_merge_base = executer.execute_for_output()
 
     def generate_local_branch_logs_to_merge_base(self):
@@ -90,5 +89,5 @@ class ChainRepository():
         self.branch_name_map[commit_id].append(name)  
 
     def build_commit_tree(self):
-        builder = CommitTreeBuilder(self.octopus_merge_base, self.repository_directory, self.branch_name_map, self)
+        builder = CommitTreeBuilder(self.octopus_merge_base, self.repository.path, self.branch_name_map, self)
         self.tree = builder.build_commit_tree(self.local_branch_logs_to_merge_base)

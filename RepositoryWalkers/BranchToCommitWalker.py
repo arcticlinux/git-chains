@@ -1,11 +1,11 @@
-import os
+from pygit2 import Repository
 
 from RepositoryWalkers.RepositoryWalker import RepositoryWalker
 from Interoperability.ShellCommandExecuter import ShellCommandExecuter
 
 class BranchToCommitWalker(RepositoryWalker):
-    def __init__(self, repository, commit_to_stop_at):
-        self.repository_directory = os.path.split(repr(repository))[1][:-4]
+    def __init__(self, repository: Repository, commit_to_stop_at):
+        self.repository_directory = repository.path
         self.commit_to_stop_at = commit_to_stop_at
         super().__init__(repository)
 

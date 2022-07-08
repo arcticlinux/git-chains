@@ -1,4 +1,4 @@
-import os
+from pygit2 import Repository
 
 from BranchFilters.BranchFilterer import BranchFilterer
 from Interoperability.ShellCommandExecuter import ShellCommandExecuter
@@ -6,10 +6,9 @@ from RepositoryWalkers.BranchToCommitWalker import BranchToCommitWalker
 from Logger import Logger
 
 class HeadToMasterBranchFilterer(BranchFilterer):
-    def __init__(self, repository):
+    def __init__(self, repository: Repository):
         self.logger = Logger(self)
         self.repository = repository
-        self.repository_directory = os.path.split(repr(repository))[1][:-4]
         self.head_branch_name = self.repository.head.name[11:]
         self.generate_log_from_head_to_merge_base()
 
@@ -31,7 +30,7 @@ class HeadToMasterBranchFilterer(BranchFilterer):
 
     def get_merge_base(self, branch_name, other_branch_name):
         args = ['git', 'merge-base', branch_name, other_branch_name]
-        executer = ShellCommandExecuter(self.repository_directory, args)
+        executer = ShellCommandExecuter(self.repository.path, args)
         return executer.execute_for_output()
 
     def should_include_branch(self, branch_name):
