@@ -25,7 +25,7 @@ class ChainRepository():
         self.logger = Logger(self)
         self.tree = None
         self.repository = repository
-        self.head_name = self.repository.head.name.split('/')[-1]
+        self.head_name = self.repository.head.shorthand
         self.initialize()
 
     def initialize(self):
@@ -75,13 +75,7 @@ class ChainRepository():
 
     def populate_branch_name_map(self):
         for branch in self.local_branches:
-            branch_name = self.format_branch_name(branch.name)
-            self.append_to_branch_name_map(branch.target.hex, branch_name)
-
-    def format_branch_name(self, branch_name):
-        if (branch_name.startswith("refs/heads/")):
-            return branch_name[len("refs/heads/"):]
-        return branch_name
+            self.append_to_branch_name_map(branch.target.hex, branch.shorthand)
 
     def append_to_branch_name_map(self, commit_id, name):
         if (not commit_id in self.branch_name_map):
